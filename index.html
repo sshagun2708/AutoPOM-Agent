@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <input id="url" placeholder="Enter URL" />
+  <!-- Replaced text field with file input -->
+  <input type="file" id="testCaseFile" accept=".xlsx, .csv" />
+  <button onclick="generate()">Attach testcases and Generate POM</button>
+
+  <script>
+    async function generate() {
+      const fileInput = document.getElementById('testCaseFile');
+      const url = document.getElementById('url').value;
+      
+      const formData = new FormData();
+      formData.append('url', url);
+      formData.append('file', fileInput.files[0]);
+
+ try {
+      const response = await fetch('http://localhost:3000/generate-pom', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const result = await response.json();
+      // This alert will show the "Success" message you are returning from the server
+      alert(result.message); 
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+import 'dotenv/config'; // This loads the variables immediately
