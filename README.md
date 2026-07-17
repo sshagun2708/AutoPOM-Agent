@@ -16,7 +16,7 @@ To get started with AutoPOM-Agent, follow these steps:
    Run this command in your terminal to start the server:
    `npx tsx server.ts`
 6. **Access the Interface:**
-   Once the terminal shows "Server running on http://localhost:3000 then copy and run this link in your web browser to start generating your POM files = file:///C:/Auto_POM/index.html" .
+   Once the terminal shows "Server running on http://localhost:3000 then copy and run this link in your web browser to start generating your POM files.
 
 ## Environment Setup
 This project requires API keys to function. To set them up securely:
