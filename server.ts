@@ -1,15 +1,27 @@
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
-import { runAgent } from './autopom-agent';
+import path from 'path';
+import { runAgent } from './autopom-agent.js';
 
 const app = express();
-const upload = multer({ dest: 'uploads/' }); // Files will be saved here temporarily
+const port = 3000;
+const upload = multer({ dest: 'uploads/' });
 
 app.use(cors());
-// Note: We don't need express.json() for the file upload route 
-// because we are using FormData (multipart/form-data)
 
+// Native way to get directory path in ES Modules
+const __dirname = import.meta.dirname;
+
+// Serve static files
+app.use(express.static(path.join(__dirname, '.')));
+
+// Serve index.html at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Handle POM generation
 app.post('/generate-pom', upload.single('file'), async (req, res) => {
   const { url } = req.body;
   const file = req.file;
@@ -19,9 +31,7 @@ app.post('/generate-pom', upload.single('file'), async (req, res) => {
   }
 
   try {
-    // Pass the URL and the path of the uploaded file to your agent
     await runAgent(url, file.path); 
-    
     res.json({ message: "Success: Test cases processed and POM updated!" });
   } catch (error) {
     console.error("Agent error:", error);
@@ -29,4 +39,4 @@ app.post('/generate-pom', upload.single('file'), async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
