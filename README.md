@@ -12,6 +12,12 @@ To get started with AutoPOM-Agent, follow these steps:
    `npm install`
 4. **Install Playwright:**
    `npx playwright install`
+5. **Start the AutoPOM Agent:**
+   Run this command in your terminal to start the server:
+   `npx tsx server.ts`
+6. **Access the Interface:**
+   Once the terminal shows "Server running on http://localhost:3000 then copy and run this link in your web browser to start generating your POM files = file:///C:/Auto_POM/index.html" .
+
 ## Environment Setup
 This project requires API keys to function. To set them up securely:
 1. **Create your .env file:**
