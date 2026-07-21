@@ -1,5 +1,5 @@
 # AutoPOM-Agent
-**AutoPOM Agent** streamlines test engineering by instantly converting web URLs and uploaded test cases into structured, optimized Playwright Page Object Model (POM) files. It bridges the gap between manual requirements and scalable automation, drastically reducing development time while ensuring robust, reliable test suites for any application.
+AutoPOM AI autonomously creates frameworks, writes optimized code, and executes tests with zero human intervention. It instantly converts URLs and test cases into structured Playwright POM suites, and shares interactive HTML reports upon completion, bridging manual requirements and scalable automation to drastically reduce development time.
 
 ## Installation
 To get started with AutoPOM-Agent, follow these steps:
