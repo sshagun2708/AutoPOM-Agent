@@ -1,42 +1,41 @@
 import express from 'express';
-import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
-import { runAgent } from './autopom-agent.js';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { runAgent } from './autopom-agent';
+
+// Safely define __dirname in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
 const upload = multer({ dest: 'uploads/' });
 
-app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Native way to get directory path in ES Modules
-const __dirname = import.meta.dirname;
+app.post('/generate-pom', upload.single('testCaseFile'), async (req: any, res: any) => {
+    try {
+        const url = req.body.url;
+        const file = req.file;
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '.')));
+        if (!url || !file) {
+            return res.status(400).send({ status: "Error", message: "URL or test case file missing." });
+        }
 
-// Serve index.html at root
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+        const testRequirements = fs.readFileSync(file.path, 'utf8');
+        
+        console.log(`🚀 Request received for: ${url} with file: ${file.originalname}`);
+        
+        await runAgent(url, testRequirements);
+
+        fs.unlinkSync(file.path);
+
+        res.status(200).send({ status: "Success", message: "Framework generated and tests executed." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ status: "Error", message: "Agent failed to execute." });
+    }
 });
 
-// Handle POM generation
-app.post('/generate-pom', upload.single('file'), async (req, res) => {
-  const { url } = req.body;
-  const file = req.file;
-
-  if (!file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
-
-  try {
-    await runAgent(url, file.path); 
-    res.json({ message: "Success: Test cases processed and POM updated!" });
-  } catch (error) {
-    console.error("Agent error:", error);
-    res.status(500).json({ error: "Agent failed to process file" });
-  }
-});
-
-app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+app.listen(3000, () => console.log('✅ Agent UI running at http://localhost:3000'));

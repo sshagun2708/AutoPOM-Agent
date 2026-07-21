@@ -1,4 +1,35 @@
 {
-  "url": "https://www.saucedemo.com/",
-  "elements": []
+  "url": "https://opensource-demo.orangehrmlive.com/",
+  "elements": [
+    {
+      "tag": "input",
+      "type": "hidden",
+      "id": null,
+      "data_testid": null,
+      "name": "_token",
+      "aria_label": null,
+      "placeholder": null,
+      "text": null
+    },
+    {
+      "tag": "input",
+      "type": null,
+      "id": null,
+      "data_testid": null,
+      "name": "username",
+      "aria_label": null,
+      "placeholder": "Username",
+      "text": null
+    },
+    {
+      "tag": "input",
+      "type": "password",
+      "id": null,
+      "data_testid": null,
+      "name": "password",
+      "aria_label": null,
+      "placeholder": "Password",
+      "text": null
+    }
+  ]
 }

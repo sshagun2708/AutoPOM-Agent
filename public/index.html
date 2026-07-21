@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoPOM Agent Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; background: #f4f4f9; }
+        .container { max-width: 500px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        input, button { width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>AutoPOM Framework Generator</h2>
+        <label for="url">Target URL:</label>
+        <input type="text" id="url" placeholder="https://example.com" />
+
+        <label for="testCaseFile">Attach Test Case File:</label>
+        <input type="file" id="testCaseFile" accept=".txt,.csv,.xlsx,.json,.pdf" />
+
+        <button onclick="triggerAgent()">Generate Framework & Run Tests</button>
+        <p id="status" style="font-weight: bold; color: green;"></p>
+    </div>
+
+    <script>
+        async function triggerAgent() {
+            const url = document.getElementById('url').value;
+            const fileInput = document.getElementById('testCaseFile');
+            const status = document.getElementById('status');
+
+            if (!url || fileInput.files.length === 0) {
+                alert("Please enter a URL and attach a test case file!");
+                return;
+            }
+
+            status.innerText = "Uploading file and running agent...";
+
+            const formData = new FormData();
+            formData.append('url', url);
+            formData.append('testCaseFile', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/generate-pom', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                status.innerText = "Success! Framework created and report opened.";
+            } catch (error) {
+                status.innerText = "Error during generation. Check VS Code terminal.";
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
